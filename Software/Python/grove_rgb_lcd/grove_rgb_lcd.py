@@ -4,7 +4,7 @@
 #
 # The GrovePi connects the Raspberry Pi and Grove sensors.  You can learn more about GrovePi here:  http://www.dexterindustries.com/GrovePi
 #
-# Have a question about this example?  Ask on the forums here:  http://www.dexterindustries.com/forum/?forum=grovepi
+# Have a question about this example?  Ask on the forums here:  http://forum.dexterindustries.com/c/grovepi
 #
 # History
 # ------------------------------------------------
@@ -44,19 +44,22 @@ THE SOFTWARE.
 # 	Doesn't support anything clever, cursors or anything
 
 import time,sys
-import RPi.GPIO as GPIO
-import smbus
+
+if sys.platform == 'uwp':
+    import winrt_smbus as smbus
+    bus = smbus.SMBus(1)
+else:
+    import smbus
+    import RPi.GPIO as GPIO
+    rev = GPIO.RPI_REVISION
+    if rev == 2 or rev == 3:
+        bus = smbus.SMBus(1)
+    else:
+        bus = smbus.SMBus(0)
 
 # this device has two I2C addresses
 DISPLAY_RGB_ADDR = 0x62
 DISPLAY_TEXT_ADDR = 0x3e
-
-# use the bus that matches your raspi version
-rev = GPIO.RPI_REVISION
-if rev == 2 or rev == 3:
-    bus = smbus.SMBus(1)
-else:
-    bus = smbus.SMBus(0)
 
 # set backlight to (R,G,B) (values from 0..255 for each)
 def setRGB(r,g,b):

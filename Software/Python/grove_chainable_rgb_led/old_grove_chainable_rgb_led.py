@@ -4,7 +4,7 @@
 #
 # The GrovePi connects the Raspberry Pi and Grove sensors.  You can learn more about GrovePi here:  http://www.dexterindustries.com/GrovePi
 #
-# Have a question about this example?  Ask on the forums here:  http://www.dexterindustries.com/forum/?forum=grovepi
+# Have a question about this example?  Ask on the forums here:  http://forum.dexterindustries.com/c/grovepi
 #
 '''
 ## License
@@ -43,7 +43,7 @@ pin = 7
 
 # I have 10 LEDs connected in series with the first connected to the GrovePi and the last not connected
 # First LED input socket connected to GrovePi, output socket connected to second LED input and so on
-numleds = 10     #If you only plug 1 LED, change 10 to 1
+numleds = 4     #If you only plug 1 LED, change 10 to 1
 
 grovepi.pinMode(pin,"OUTPUT")
 time.sleep(1)

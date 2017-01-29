@@ -4,7 +4,7 @@
 #
 # The GrovePi connects the Raspberry Pi and Grove sensors.  You can learn more about GrovePi here:  http://www.dexterindustries.com/GrovePi
 #
-# Have a question about this example?  Ask on the forums here:  http://www.dexterindustries.com/forum/?forum=grovepi
+# Have a question about this example?  Ask on the forums here:  http://forum.dexterindustries.com/c/grovepi
 #
 '''
 ## License
@@ -34,6 +34,8 @@ THE SOFTWARE.
 '''
 
 import grove_compass_lib
+import time
+
 c=grove_compass_lib.compass()
 while True:
 	print("X:",c.x,"Y:",c.y,"X:",c.z,"Heading:",c.headingDegrees)

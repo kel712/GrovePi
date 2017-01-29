@@ -5,7 +5,7 @@
 #
 # The GrovePi connects the Raspberry Pi and Grove sensors.  You can learn more about GrovePi here:  http://www.dexterindustries.com/GrovePi
 #
-# Have a question about this example?  Ask on the forums here:  http://www.dexterindustries.com/forum/?forum=grovepi
+# Have a question about this example?  Ask on the forums here:  http://forum.dexterindustries.com/c/grovepi
 #
 # LICENSE: 
 # These files have been made available online through a [Creative Commons Attribution-ShareAlike 3.0](http://creativecommons.org/licenses/by-sa/3.0/) license.
@@ -45,17 +45,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 '''
 
-import smbus
+import sys
 import time
 import math
-import RPi.GPIO as GPIO
 import struct
 
-rev = GPIO.RPI_REVISION
-if rev == 2 or rev == 3:
+if sys.platform == 'uwp':
+    import winrt_smbus as smbus
     bus = smbus.SMBus(1)
 else:
-    bus = smbus.SMBus(0)
+    import smbus
+    import RPi.GPIO as GPIO
+    rev = GPIO.RPI_REVISION
+    if rev == 2 or rev == 3:
+        bus = smbus.SMBus(1)
+    else:
+        bus = smbus.SMBus(0)
+
 grayH= 0xF0
 grayL= 0x0F
 
