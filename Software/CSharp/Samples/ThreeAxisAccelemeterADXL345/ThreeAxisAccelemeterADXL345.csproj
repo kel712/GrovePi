@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{12DF6824-E562-4123-9D57-EEBDBE36A7E4}</ProjectGuid>
+    <ProjectGuid>{FFCD92FE-5C8E-4D59-8958-686060EBE880}</ProjectGuid>
     <OutputType>winmdobj</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LcdRgbDisplay</RootNamespace>
-    <AssemblyName>LcdRgbDisplay</AssemblyName>
+    <RootNamespace>ThreeAxisAccelemeterADXL345</RootNamespace>
+    <AssemblyName>ThreeAxisAccelemeterADXL345</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
@@ -18,7 +18,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <AllowCrossPlatformRetargeting>false</AllowCrossPlatformRetargeting>
-    <PackageCertificateKeyFile>LcdRgbDisplay_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>ThreeAxisAccelemeterADXL345_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxPackage>true</AppxPackage>
     <ContainsStartupTask>true</ContainsStartupTask>
   </PropertyGroup>
@@ -103,7 +103,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="LcdRgbDisplay_TemporaryKey.pfx" />
+    <None Include="ThreeAxisAccelemeterADXL345_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />
@@ -130,9 +130,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="GrovePi">
-      <HintPath>..\..\..\GrovePi\bin\ARM\Debug\GrovePi.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\GrovePi\GrovePi.csproj">
+      <Project>{a667742a-b887-4b46-8ec1-c671e8bec5e4}</Project>
+      <Name>GrovePi</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
