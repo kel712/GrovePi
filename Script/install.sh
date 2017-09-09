@@ -32,17 +32,17 @@ identify_cie() {
 }
 
 identify_robot() {
-	echo "  _____                    _____ _ " 
+	echo "  _____                    _____ _ "
 	echo " / ____|                  |  __ (_)  "
 	echo "| |  __ _ __ _____   _____| |__) |   "
 	echo "| | |_ | '__/ _ \ \ / / _ \  ___/ |  "
 	echo "| |__| | | | (_) \ V /  __/ |   | |  "
 	echo " \_____|_|  \___/ \_/ \___|_|   |_|  "
-                                     
+
 	feedback "Welcome to GrovePi Installer."
 }
 
-display_welcome_msg() {	
+display_welcome_msg() {
 	echo " "
 	echo "Requirements:"
 	echo "1) Must be connected to the internet"
@@ -60,6 +60,7 @@ display_welcome_msg() {
 	echo "   - python3-smbus    Python3 bindings for Linux SMBus access through i2c-dev"
 	echo "   - arduino          AVR development board IDE and built-in libraries"
 	echo "   - minicom          friendly menu driven serial communication program"
+  echo "   - numpy            is the fundamental package for scientific computing with Python"
 	echo "2) Clone, build wiringPi in GrovePi/Script and install it"
 	echo "3) Removes I2C and SPI from modprobe blacklist /etc/modprobe.d/raspi-blacklist.conf"
 	echo "4) Adds I2C-dev, i2c-bcm2708 and spi-dev to /etc/modules"
@@ -92,7 +93,7 @@ check_internet() {
     if ! quiet_mode ; then
         feedback "Check for internet connectivity..."
         feedback "=================================="
-        wget -q --tries=2 --timeout=20 --output-document=/dev/null https://raspberrypi.org 
+        wget -q --tries=2 --timeout=20 --output-document=/dev/null https://raspberrypi.org
         if [ $? -eq 0 ];then
             echo "Connected to the Internet"
         else
@@ -114,7 +115,11 @@ install_dependencies() {
 	sudo apt-get purge python3-rpi.gpio -y
 	sudo apt-get install python-rpi.gpio -y
 	sudo apt-get install python3-rpi.gpio -y
+       sudo apt-get install python-scipy -y
+       sudo apt-get install python3-scipy -y
 	sudo pip install -U RPi.GPIO
+  sudo pip2 install numpy
+  sudo pip3 install numpy
 
     feedback "Dependencies installed"
 }
@@ -123,7 +128,7 @@ install_wiringpi() {
     # Check if WiringPi Installed
 
     # using curl piped to bash does not leave a file behind. no need to remove it
-    # we can do either the curl - it works just fine 
+    # we can do either the curl - it works just fine
     # sudo curl https://raw.githubusercontent.com/DexterInd/script_tools/master/update_wiringpi.sh | bash
     # or call the version that's already on the SD card
     sudo bash $DEXTERSCRIPT/update_wiringpi.sh
@@ -132,7 +137,7 @@ install_wiringpi() {
     # remove wiringPi directory if present
     if [ -d wiringPi ]
     then
-        sudo rm -r wiringPi 
+        sudo rm -r wiringPi
     fi
     # End check if WiringPi installed
     echo " "
@@ -213,7 +218,7 @@ install_python_libs(){
 	echo "cfr. https://www.raspberrypi.org/forums/viewtopic.php?f=66&t=123081"
 
 	echo " "
-	
+
 	sudo apt-get install python-smbus -y
 
 	echo " "
@@ -228,7 +233,7 @@ install_python_libs(){
 		echo "/usr/lib/python2.7/dist-packages not found, exiting"
 		exit 1
 	fi
-	echo "Done" 
+	echo "Done"
 }
 
 call_for_reboot() {

@@ -41,14 +41,15 @@ THE SOFTWARE.
 # Author	Date      		Comments
 # Karan		13 Feb 2014  	Initial Authoring
 # 			11 Nov 2016		I2C retries added for faster IO
-#							DHT function updated to look for nan's 
+#							DHT function updated to look for nan's
 
 import sys
 import time
 import math
 import struct
+import numpy
 
-debug =0
+debug = 0
 
 if sys.version_info<(3,0):
 	p_version=2
@@ -152,7 +153,7 @@ ir_recv_pin_cmd=[22]
 dus_sensor_read_cmd=[10]
 dust_sensor_en_cmd=[14]
 dust_sensor_dis_cmd=[15]
-encoder_read_cmd=[11] 
+encoder_read_cmd=[11]
 encoder_en_cmd=[16]
 encoder_dis_cmd=[17]
 flow_read_cmd=[12]
@@ -304,19 +305,19 @@ def dht(pin, module_type):
 	except (TypeError, IndexError):
 		return [-1,-1]
 	# data returned in IEEE format as a float in 4 bytes
-	
+
 	if p_version==2:
 		h=''
 		for element in (number[1:5]):
 			h+=chr(element)
-			
+
 		t_val=struct.unpack('f', h)
 		t = round(t_val[0], 2)
 
 		h = ''
 		for element in (number[5:9]):
 			h+=chr(element)
-		
+
 		hum_val=struct.unpack('f',h)
 		hum = round(hum_val[0], 2)
 	else:
@@ -328,6 +329,26 @@ def dht(pin, module_type):
 		return [t, hum]
 	else:
 		return [float('nan'),float('nan')]
+
+# after a list of numerical values is provided
+# the function returns a list with the outlier(or extreme) values removed
+# make the std_factor_threshold bigger so that filtering becomes less strict
+# and make the std_factor_threshold smaller to get the opposite
+def statisticalNoiseReduction(values, std_factor_threshold = 2):
+	if len(values) == 0:
+		return []
+		
+	mean = numpy.mean(values)
+	standard_deviation = numpy.std(values)
+
+	if standard_deviation == 0:
+		return values
+
+	filtered_values = [element for element in values if element > mean - std_factor_threshold * standard_deviation]
+	filtered_values = [element for element in filtered_values if element < mean + std_factor_threshold * standard_deviation]
+
+	return filtered_values
+
 
 # Grove LED Bar - initialise
 # orientation: (0 = red to green, 1 = green to red)
@@ -510,19 +531,19 @@ def ir_read_signal():
 		return [-1]*21
 	except IOError:
 		return [-1]*21
-		
+
 # Grove - Infrared Receiver- set the pin on which the Grove IR sensor is connected
 def ir_recv_pin(pin):
 	write_i2c_block(address,ir_recv_pin_cmd+[pin,unused,unused])
-	
+
 def dust_sensor_en():
 	write_i2c_block(address, dust_sensor_en_cmd + [unused, unused, unused])
 	time.sleep(.2)
-	
+
 def dust_sensor_dis():
 	write_i2c_block(address, dust_sensor_dis_cmd + [unused, unused, unused])
 	time.sleep(.2)
-	
+
 def dustSensorRead():
 	write_i2c_block(address, dus_sensor_read_cmd + [unused, unused, unused])
 	time.sleep(.2)
@@ -538,15 +559,15 @@ def dustSensorRead():
 	else:
 		return [-1,-1]
 	print (data_back)
-	
+
 def encoder_en():
 	write_i2c_block(address, encoder_en_cmd + [unused, unused, unused])
 	time.sleep(.2)
-	
+
 def encoder_dis():
 	write_i2c_block(address, encoder_dis_cmd + [unused, unused, unused])
 	time.sleep(.2)
-	
+
 def encoderRead():
 	write_i2c_block(address, encoder_read_cmd + [unused, unused, unused])
 	time.sleep(.2)
@@ -556,15 +577,15 @@ def encoderRead():
 		return [data_back[0],data_back[1]]
 	else:
 		return [-1,-1]
-		
+
 def flowDisable():
 	write_i2c_block(address, flow_disable_cmd + [unused, unused, unused])
 	time.sleep(.2)
-	
+
 def flowEnable():
 	write_i2c_block(address, flow_en_cmd + [unused, unused, unused])
 	time.sleep(.2)
-	
+
 def flowRead():
 	write_i2c_block(address, flow_read_cmd + [unused, unused, unused])
 	time.sleep(.2)
